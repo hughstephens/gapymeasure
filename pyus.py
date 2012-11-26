@@ -33,8 +33,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
+__version__ = 0.2
 # List of complementary arguments that can be used in keyword arguments.
+# The key can be used in methods that accept kwargs.
+# For instance::
+#     tracker = AppTracker(APP_NAME, TRACKING_ID, CLIENT_ID, language='fr')
+
 FIELDNAME_TO_PARAM = {
     # User language
     "language": 'ul',

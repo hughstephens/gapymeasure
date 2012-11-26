@@ -36,3 +36,6 @@ nosetests.xml
 
 # Pycharm
 .idea
+
+# Sphinx documentation
+doc/_build
