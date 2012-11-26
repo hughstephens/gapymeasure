@@ -96,6 +96,7 @@ class AbstractTracker(object):
     def _track(self, hit_type, params=None):
         """
         Tracking method, called by subclasses.
+
         :param hit_type: hit type, should be provided by a subclass method.
         :param prams: A dict of other query parameters, should be provided by the subclass method.
         """
@@ -150,6 +151,7 @@ class AppTracker(AbstractTracker):
     def track_event(self, category, action, label=None, value=-1, params=None):
         """
         Track an event within the application.
+
         :param category:  a category is a name that you supply as a way to group objects that you want to track. The term Category appears in the reporting interface as Top Categories in the Events Overview page.
         :param action: Typically, you will use the action parameter to name the type of event or interaction you want to track for a particular web object. For example, with a single "Videos" category, you can track a number of specific events with this parameter, such as play, stop, pause. You can supply any string for the action parameter. In some situations, the actual event or action name is not as meaningful, so you might use the action parameter to track other elements. For example, if you want to track page downloads, you could provide the document file type as the action parameter for the download event.
         :param label: With labels, you can provide additional information for events that you want to track, such as the movie title in the video example
@@ -188,6 +190,7 @@ class AppTracker(AbstractTracker):
 def random_uuid():
     """
     Generates a random UUID, based on the host ID and current time, as defined per RFC 4122 uuid1.
+
     :return: a UUID `str`
     """
     import uuid
