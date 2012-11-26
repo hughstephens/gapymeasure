@@ -3,15 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Pycharm Usage Statistics's documentation!
+Welcome to Python Usage Statistics' documentation!
 ====================================================
-
-Contents:
 
 .. toctree::
    :maxdepth: 2
 
-
+   pyus
 
 Indices and tables
 ==================

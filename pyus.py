@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-This module is a library to build anonymous usage statistics, with Google analytics,
-using the Google measurement protocol.
+This module is a library to build anonymous usage statistics, with `Google analytics`_,
+using the `Google measurement protocol`_.
+
+.. _`Google analytics`: http://www.google.com/analytics/
+.. _`Google measurement protocol`: https://developers.google.com/analytics/devguides/collection/protocol/v1/
 """
 # this should work both on Python 2 and Python 3
 import threading
@@ -34,17 +37,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 __version__ = 0.2
+
 # List of complementary arguments that can be used in keyword arguments.
 # The key can be used in methods that accept kwargs.
 # For instance::
 #     tracker = AppTracker(APP_NAME, TRACKING_ID, CLIENT_ID, language='fr')
 
 FIELDNAME_TO_PARAM = {
-    # User language
     "language": 'ul',
-    # When present, the IP address of the sender will be anonymized. For example, the IP will be anonymized if any of the following parameters are present in the payload: &aip=, &aip=0, or &aip=1
     "anonymizeIp": 'aip',
-    # The character set used to encode the page / document.
     "encoding": 'de'
 }
 
@@ -52,7 +53,22 @@ FIELDNAME_TO_PARAM = {
 class AbstractTracker(object):
     """
     The tracker represents a tracking session for Google analytics.
-    It provides methods to track screen view and events within the application.
+
+    This is an abstract class, you should use :class:`AppTracker` instead.
+
+    :param tracking_id:  You must provide your own `Tracking ID`_ / Web property / Property ID
+    :type tracking_id: string of the form UA-XXXX-Y
+    :param client_id: The client ID identifies a particular user and device instance. It must be anonymous -- it must not be the device ID / firmware number of the device. You should generate a random Client ID for each install (see `random_uuid()`) and store in the application settings.
+    :type client_id: `string` in the form of a RFC4122 UUID, eg 35009a79-1a05-49d7-b876-2b884d0f825b
+
+    Keyword arguments can be:
+
+    * `language`: (`str`)  user language, as `ISO 639-1`_ code.
+    * `anonymizeIp`: (`str`) When present, the IP address of the sender will be anonymized.
+    * `encoding`: (`str`) The character set used to encode the page / document.
+
+    .. _`Tracking ID`: http://support.google.com/analytics/bin/answer.py?answer=1032385
+    .. _`ISO 639-1`:http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
     """
     # Google analytics API point
     GA_URL = 'http://www.google-analytics.com/collect'
@@ -61,22 +77,6 @@ class AbstractTracker(object):
     ENCODING = 'utf-8'
 
     def __init__(self, tracking_id, client_id=None, **kwargs):
-        """
-        Create a tracking session.
-
-        You must provide your own Tracking ID; see http://support.google.com/analytics/bin/answer.py?answer=1032385
-
-        The client ID identifies a particular user and device instance.
-        You should generate a random Client ID for each install (see `random_uuid()`)
-        and store in the application settings.
-
-        :param tracking_id:  Tracking ID / Web property / Property ID
-        :type tracking_id: string of the form UA-XXXX-Y
-        :param client_id: Anonymous client ID
-        :type client_id: string in the form of a RFC4122 UID, eg 35009a79-1a05-49d7-b876-2b884d0f825b
-
-
-        """
         self.params = dict()
         self.params['tid'] = tracking_id
         if client_id is None:
@@ -96,6 +96,7 @@ class AbstractTracker(object):
     def _track(self, hit_type, params=None):
         """
         Tracking method, called by subclasses.
+
         :param hit_type: hit type, should be provided by a subclass method.
         :param prams: A dict of other query parameters, should be provided by the subclass method.
         """
@@ -122,17 +123,19 @@ class AbstractTracker(object):
 class AppTracker(AbstractTracker):
     """
     A Google analytics tracker for mobile or desktop applications.
+
+    It provides methods to track screen view (see :func:`track_screen`) and events (see :func:`track_event`)
+    within the application.
+
+    :param app_name: The application name
+    :type app_name: string
+
+    Keyword arguments can be:
+
+    * `version`: version of the application. Default value: 1.
     """
 
     def __init__(self, app_name, tracking_id, client_id=None, **kwargs):
-        """
-        :param app_name: The application name
-        :type app_name: string
-
-        Keyword arguments can be:
-
-        * `version`: version of the application. Default value: 1.
-        """
         super(AppTracker, self).__init__(tracking_id, client_id, **kwargs)
         self.params['an'] = app_name
         self.params['av'] = kwargs.get('version', 1)
@@ -141,6 +144,9 @@ class AppTracker(AbstractTracker):
     def track_screen(self, screen_name, params=None):
         """
         Track a screen view.
+
+        :param screen_name: Name of the screen
+        :type screen_name: `str`
         """
         if params is None:
             params = dict()
@@ -150,6 +156,7 @@ class AppTracker(AbstractTracker):
     def track_event(self, category, action, label=None, value=-1, params=None):
         """
         Track an event within the application.
+
         :param category:  a category is a name that you supply as a way to group objects that you want to track. The term Category appears in the reporting interface as Top Categories in the Events Overview page.
         :param action: Typically, you will use the action parameter to name the type of event or interaction you want to track for a particular web object. For example, with a single "Videos" category, you can track a number of specific events with this parameter, such as play, stop, pause. You can supply any string for the action parameter. In some situations, the actual event or action name is not as meaningful, so you might use the action parameter to track other elements. For example, if you want to track page downloads, you could provide the document file type as the action parameter for the download event.
         :param label: With labels, you can provide additional information for events that you want to track, such as the movie title in the video example
@@ -188,7 +195,9 @@ class AppTracker(AbstractTracker):
 def random_uuid():
     """
     Generates a random UUID, based on the host ID and current time, as defined per RFC 4122 uuid1.
-    :return: a UUID `str`
+
+    :return: a UUID
+    :type: `str`
     """
     import uuid
 
