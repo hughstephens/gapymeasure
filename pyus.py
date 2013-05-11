@@ -36,7 +36,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-__version__ = 0.2
+__version__ = 0.3
 
 # List of complementary arguments that can be used in keyword arguments.
 # The key can be used in methods that accept kwargs.
@@ -89,8 +89,13 @@ class AbstractTracker(object):
                 self.params[FIELDNAME_TO_PARAM[k]] = kwargs[k]
 
         self.post_queue = queue.Queue()
+        self.running = True
         # spawn a new thread for HTTP requests
-        threading.Thread(target=self._http_post_worker).start()
+        thread = threading.Thread(target=self._http_post_worker)
+        # the entire Python program exits when only daemon threads are left. 
+        # Daemon threads are abruptly stopped at shutdown, but I don't care for tracking.
+        thread.daemon=True
+        thread.start()
 
 
     def _track(self, hit_type, params=None):
@@ -109,7 +114,7 @@ class AbstractTracker(object):
         self.post_queue.put(http_params)
 
     def _http_post_worker(self):
-        while True:
+        while self.running:
             params = self.post_queue.get(block=True)
             print(params)
             data = urlencode(params).encode(AbstractTracker.ENCODING)
@@ -118,6 +123,7 @@ class AbstractTracker(object):
             request.add_header('Content-Type', "application/x-www-form-urlencoded;charset=" + AbstractTracker.ENCODING)
             response = urlbib.urlopen(request)
             # TODO handle response?
+            
 
 
 class AppTracker(AbstractTracker):
