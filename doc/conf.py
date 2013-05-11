@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Pycharm Usage Statistics documentation build configuration file, created by
+# Python Usage Statistics documentation build configuration file, created by
 # sphinx-quickstart on Mon Nov 26 11:10:06 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -42,7 +42,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Pycharm Usage Statistics'
+project = 'Python Usage Statistics'
 copyright = '2012, Régis Décamps'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -166,7 +166,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'PycharmUsageStatisticsdoc'
+htmlhelp_basename = 'PythonUsageStatisticsdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -185,7 +185,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'PycharmUsageStatistics.tex', 'Pycharm Usage Statistics Documentation',
+  ('index', 'PythonUsageStatistics.tex', 'Python Usage Statistics Documentation',
    'Régis Décamps', 'manual'),
 ]
 
@@ -215,7 +215,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'pycharmusagestatistics', 'Pycharm Usage Statistics Documentation',
+    ('index', 'pythonusagestatistics', 'Python Usage Statistics Documentation',
      ['Régis Décamps'], 1)
 ]
 
@@ -229,8 +229,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'PycharmUsageStatistics', 'Pycharm Usage Statistics Documentation',
-   'Régis Décamps', 'PycharmUsageStatistics', 'One line description of project.',
+  ('index', 'PythonUsageStatistics', 'Python Usage Statistics Documentation',
+   'Régis Décamps', 'PythonUsageStatistics', 'One line description of project.',
    'Miscellaneous'),
 ]
 
