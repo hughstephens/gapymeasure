@@ -89,7 +89,6 @@ class AbstractTracker(object):
                 self.params[FIELDNAME_TO_PARAM[k]] = kwargs[k]
 
         self.post_queue = queue.Queue()
-        self.running = True
         # spawn a new thread for HTTP requests
         thread = threading.Thread(target=self._http_post_worker)
         # the entire Python program exits when only daemon threads are left. 
@@ -114,7 +113,7 @@ class AbstractTracker(object):
         self.post_queue.put(http_params)
 
     def _http_post_worker(self):
-        while self.running:
+        while True:
             params = self.post_queue.get(block=True)
             print(params)
             data = urlencode(params).encode(AbstractTracker.ENCODING)
